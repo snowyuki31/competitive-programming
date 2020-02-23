@@ -1,0 +1,6 @@
+*.tex
+*.log
+*.aux
+*.gz
+*.exe
+.vscode/
