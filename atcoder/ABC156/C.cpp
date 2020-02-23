@@ -13,18 +13,7 @@ using namespace std;
 using ll = long long;
 typedef pair<ll, ll> P;
 ll MOD = 1e9 + 7;
-ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
-ll lcm(ll a, ll b) { return (a * b) / gcd(a, b); }
 ll devc(ll x, ll y) { return 1 + (x - 1) / y; }
-ll modpow(ll x, ll y, ll m)
-{
-    if (y == 0)
-        return 1;
-    ll res = modpow(x, y / 2, m);
-    return res * res % m * (y & 1 ? x : 1) % m;
-}
-ll modinv(ll x) { return modpow(x, MOD - 2, MOD); }
-
 
 int main()
 {
@@ -32,9 +21,23 @@ int main()
     ios::sync_with_stdio(0);
     cout << fixed << setprecision(20);
 
-    ll N, R; cin >> N >> R;
-    if(N >= 10) print(R);
-    else print(R + 100 * (10 - N));
+    ll N;
+    cin >> N;
+    vector<ll> X(N);
+    rep(i, N) cin >> X[i];
+    
+    ll ans = 1e18;
+
+    for (ll P = 0; P <= 100; ++P){
+        ll sum = 0;
+        for (ll i = 0; i < N; ++i){
+            sum += (X[i] - P) * (X[i] - P);
+        }
+        ans = min(ans, sum);
+    }
+
+    print(ans);
 
     return 0;
+
 }
