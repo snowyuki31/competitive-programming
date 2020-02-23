@@ -3,4 +3,6 @@
 *.aux
 *.gz
 *.exe
+*.dvi
 .vscode/
+template/
