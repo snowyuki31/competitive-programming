@@ -115,58 +115,72 @@ int main()
     vector<string> digits = {"1110111", "0010010", "1011101", "1011011", "0111010", "1101011", "1101111", "1010010", "1111111", "1111011"};
 
     vec2 maxnum(1 << 7, vec(8, -1));
-
+    //状態iからj本使ったときに、作れる最大の数
     rep(i, 1 << 7){
         rep(j, 8){
-            //iにj本足したときdisitsいける?
-
-            rep(num, 10){
-                string now = digits[num];
-
+            rep(x, len(digits)){
+                string num = digits[x];
+                //iにj本足したらnum作れる?
                 bool flag = true;
                 ll ct = 0;
                 rep(k, 7){
-                    if((i & (1 << k)) == 1 and now[6 - k] == '0') flag = false;
-                    if((i & (1 << k)) == 0 and now[6 - k] == '1') ++ct;
-                }
+                    //消すことはできない
+                    if((i & (1 << k)) and (num[6 - k] == '0')) flag = false;
 
+                    //消えてたら付ける
+                    if(!(i & (1 << k)) and (num[6 - k] == '1')) ++ct;
+                }
                 if(!flag) continue;
                 if(ct != j) continue;
 
-                chmax(maxnum[i][j], num);
+                chmax(maxnum[i][j], x);
             }
         }
     }
 
-    auto convert = [&](string s) {
-        ll state = 0;
-        rep(i, 7){
-            state = state << 1;
-            state += s[i] - '0';
+    //rep(j, 8) print(maxnum[1][j]);
+
+    vec2 f(n + 1, vec(k + 1, 0));
+    f[0][0] = 1;
+
+    auto convert = [&](string S) {
+        ll res = 0;
+        for(auto s : S){
+            res <<= 1;
+            res += s - '0';
         }
-        return state;
+        return res;
     };
-
-    ll state = convert("1111111");
-    rep(i, 8) print(maxnum[state][i]);
-
-    vec2 f(n + 1, vec(2100, -1));
-    f[0][0] = 0;
 
     rep1(i, n){
         ll state = convert(X[i - 1]);
 
-        rep(j, 2005){
-            //x本使うとき
-            rep(x, 8){
-                if(maxnum[state][x] != -1){
-                    if(j >= x) if(f[i - 1][j - x] != -1) chmax(f[i][j], f[i - 1][j - x] * 10 + maxnum[state][x]);
-                }
+        rep(j, k + 1){
+            //j本使っている時に数字を作れるか？
+            rep(x, 8) if(maxnum[state][x] != -1){
+                //x本使う場合
+                if(j >= x) f[i][j] |= f[i - 1][j - x];
             }
         }
     }
 
-    print(f[n][k]);
+    if(!f[n][k]) drop(-1);
+
+    string ans = "";
+
+    ll used = 0;
+
+    rep1(i, n){
+        ll num = 0;
+
+        rep(j, k + 1){
+            
+        }
+
+    }
+
+
+    print(ans);
 
     return 0;
 }

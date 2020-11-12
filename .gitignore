@@ -4,5 +4,6 @@
 *.gz
 *.exe
 *.dvi
+*.out
 .vscode/
 template/
